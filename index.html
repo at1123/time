@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exam result Countdown by AHNAF TAHSIN</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #3b82f6, #9333ea);
+            color: #fff;
+        }
+        #timer {
+            font-size: 4rem;
+            display: flex;
+            gap: 1rem;
+            background-color: rgba(0, 0, 0, 0.2);
+            padding: 1.5rem 3rem;
+            border-radius: 10px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.3);
+            animation: pulse 1s infinite;
+        }
+        .time-unit {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 80px;
+            animation: fadeIn 0.5s ease;
+        }
+        .time-number {
+            font-size: 4rem;
+            font-weight: bold;
+            animation: pop 1s infinite;
+        }
+        .time-label {
+            font-size: 1rem;
+            color: #eee;
+        }
+        /* Animations */
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+        @keyframes pop {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.2);
+            }
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        /* Result message styling */
+        #result-message {
+            display: none;
+            margin-top: 20px;
+            font-size: 2rem;
+            color: #fff;
+            animation: fadeInMessage 1s forwards;
+        }
+        @keyframes fadeInMessage {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="timer">
+        <div class="time-unit">
+            <div id="hours" class="time-number">00</div>
+            <div class="time-label">Hours</div>
+        </div>
+        <div class="time-unit">
+            <div id="minutes" class="time-number">00</div>
+            <div class="time-label">Minutes</div>
+        </div>
+        <div class="time-unit">
+            <div id="seconds" class="time-number">00</div>
+            <div class="time-label">Seconds</div>
+        </div>
+    </div>
+
+    <!-- Result message that appears after countdown -->
+    <div id="result-message">What's your result?</div>
+
+    <script>
+        function startCountdown() {
+            function updateTimer() {
+                const now = new Date();
+                const targetTime = new Date();
+                targetTime.setHours(12, 30, 0, 0); // Set to 12:30 PM today
+
+                if (now > targetTime) {
+                    targetTime.setDate(targetTime.getDate() + 1);
+                }
+
+                const timeDiff = targetTime - now;
+
+                // Calculate hours, minutes, and seconds
+                const hours = Math.floor((timeDiff / (1000 * 60 * 60)) % 24);
+                const minutes = Math.floor((timeDiff / (1000 * 60)) % 60);
+                const seconds = Math.floor((timeDiff / 1000) % 60);
+
+                // Update the HTML
+                document.getElementById("hours").textContent = String(hours).padStart(2, '0');
+                document.getElementById("minutes").textContent = String(minutes).padStart(2, '0');
+                document.getElementById("seconds").textContent = String(seconds).padStart(2, '0');
+
+                // Show result message when the countdown ends
+                if (timeDiff <= 0) {
+                    clearInterval(timerInterval);
+                    document.getElementById("hours").textContent = "00";
+                    document.getElementById("minutes").textContent = "00";
+                    document.getElementById("seconds").textContent = "00";
+                    document.getElementById("result-message").style.display = "block";
+                }
+            }
+
+            // Update the timer every second
+            updateTimer();
+            const timerInterval = setInterval(updateTimer, 1000);
+        }
+
+        // Start the countdown when the page loads
+        startCountdown();
+    </script>
+</body>
+</html>
